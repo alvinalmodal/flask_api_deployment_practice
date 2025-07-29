@@ -7,7 +7,7 @@ on:
       - development
 
 jobs:
-  say-hello:
+  deploy_applications:
     runs-on: self-hosted
     environment: ${{ github.ref_name }}
     steps:
@@ -26,12 +26,12 @@ jobs:
       - name: execute aws ecr login command
         run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 975391190725.dkr.ecr.us-east-1.amazonaws.com
       - name: assign credentials to docker login
-        run: docker login -u AWS -p $(aws ecr get-login-password) 975391190725.dkr.ecr.us-east-1.amazonaws.com/my-flask-app:latest
+        run: sudo docker login -u AWS -p $(aws ecr get-login-password) 975391190725.dkr.ecr.us-east-1.amazonaws.com/my-flask-app:latest
       - name: build docker images
-        run: docker build -t my-flask-app .
+        run: sudo docker build -t my-flask-app .
       - name: tag docker image
-        run: docker tag my-flask-app:latest 975391190725.dkr.ecr.us-east-1.amazonaws.com/my-flask-app:latest
+        run: sudo docker tag my-flask-app:latest 975391190725.dkr.ecr.us-east-1.amazonaws.com/my-flask-app:latest
       - name: tag docker image
-        run: docker push 975391190725.dkr.ecr.us-east-1.amazonaws.com/my-flask-app:latest
+        run: sudo docker push 975391190725.dkr.ecr.us-east-1.amazonaws.com/my-flask-app:latest
       - name: update ecr service
         run: aws ecs update-service --cluster flask-cluster --service flask-service --force-new-deployment
