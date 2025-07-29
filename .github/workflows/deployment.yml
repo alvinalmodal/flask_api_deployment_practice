@@ -25,6 +25,8 @@ jobs:
         run: hostname
       - name: Go to IAC code
         run: cd infrastructure_code
+      - name: Check infra code
+        run: ls -la
       - name: terraform init
         run: terraform init
       - name: terraform apply
