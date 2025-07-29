@@ -197,6 +197,15 @@ resource "aws_ecr_repository" "grafana_repo" {
   }
 }
 
+resource "aws_ecr_repository" "testing_repo" {
+  name                 = "testing-repo"
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = false
+  }
+}
+
 ################################################################################
 # DATABASE (RDS)
 # A single PostgreSQL instance.
