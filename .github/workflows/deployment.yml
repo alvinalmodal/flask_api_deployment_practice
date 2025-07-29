@@ -24,15 +24,11 @@ jobs:
       - name: Check Runner Hostname
         run: hostname
       - name: Go to IAC code
-        run: cd infrastructure_code
-      - name: Check infra code
-        run: ls -la
-      - name: terraform init
-        run: terraform init
-      - name: terraform apply
-        run: terraform apply --auto-approve
-      - name: move to root folder
-        run: cd ..
+        run: |
+          cd infrastructure_code
+          ls -la
+          terraform init
+          terraform apply --auto-approve
       - name: execute aws ecr login command
         run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 975391190725.dkr.ecr.us-east-1.amazonaws.com
       - name: assign credentials to docker login
