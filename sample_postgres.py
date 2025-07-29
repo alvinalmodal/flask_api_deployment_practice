@@ -37,6 +37,12 @@ def index():
     return "<h1>Flask API is running!</h1><p>Use the /items endpoint to interact with the database.</p>"
 
 
+@app.route('/sinong-pogi')
+def index():
+    """Root endpoint to check if the API is running."""
+    return "<h1>POGI BOYS DERICK ALVIN.</p>"
+
+
 @app.route('/init_db')
 def init_db():
     """

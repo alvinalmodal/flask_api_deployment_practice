@@ -35,3 +35,9 @@ jobs:
         run: sudo docker push 975391190725.dkr.ecr.us-east-1.amazonaws.com/my-flask-app:latest
       - name: update ecr service
         run: aws ecs update-service --cluster flask-cluster --service flask-service --force-new-deployment
+      - name: tag docker image
+        run: sudo docker tag grafana/grafana-oss:latest 975391190725.dkr.ecr.us-east-1.amazonaws.com/my-grafana:latest
+      - name: tag docker image
+        run: sudo docker push 975391190725.dkr.ecr.us-east-1.amazonaws.com/my-grafana:latest
+      - name: update ecr service
+        run: aws ecs update-service --cluster flask-cluster --service grafana-service --force-new-deployment
