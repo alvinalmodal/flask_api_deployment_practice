@@ -1,0 +1,37 @@
+﻿name: Deployment Workflow
+
+on:
+  push:
+    branches:
+      - main
+      - development
+
+jobs:
+  say-hello:
+    runs-on: self-hosted
+    environment: ${{ github.ref_name }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Print Selected Branch
+        run: |
+          echo "The selected branch is: ${GITHUB_REF#refs/heads/}"
+          echo "MY_ENV_VAR value is: $MY_ENV_VAR 1111"
+          echo "test value ${MY_ENV_VAR}"
+          echo ${{ vars.MY_ENV_VAR }}
+          echo ${{ vars.MY_ENV_VAR }} this is running on our test machine
+          echo test again
+      - name: Check Runner Hostname
+        run: hostname
+      - name: execute aws ecr login command
+        run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 975391190725.dkr.ecr.us-east-1.amazonaws.com
+      - name: assign credentials to docker login
+        run: docker login -u AWS -p $(aws ecr get-login-password) 975391190725.dkr.ecr.us-east-1.amazonaws.com/my-flask-app:latest
+      - name: build docker images
+        run: docker build -t my-flask-app .
+      - name: tag docker image
+        run: docker tag my-flask-app:latest 975391190725.dkr.ecr.us-east-1.amazonaws.com/my-flask-app:latest
+      - name: tag docker image
+        run: docker push 975391190725.dkr.ecr.us-east-1.amazonaws.com/my-flask-app:latest
+      - name: update ecr service
+        run: aws ecs update-service --cluster flask-cluster --service flask-service --force-new-deployment
