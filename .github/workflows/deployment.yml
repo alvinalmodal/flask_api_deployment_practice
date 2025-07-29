@@ -25,6 +25,8 @@ jobs:
         run: hostname
       - name: Go to IAC code
         run: cd infrastructure_code
+      - name: terraform init
+        run: terraform init
       - name: terraform apply
         run: terraform apply --auto-approve
       - name: move to root folder
