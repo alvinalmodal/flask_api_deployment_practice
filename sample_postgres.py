@@ -38,7 +38,7 @@ def index():
 
 
 @app.route('/sinong-pogi')
-def index():
+def sinong_pogi():
     """Root endpoint to check if the API is running."""
     return "<h1>POGI BOYS DERICK ALVIN.</p>"
 
